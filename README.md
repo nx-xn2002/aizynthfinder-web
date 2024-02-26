@@ -1,0 +1,3 @@
+# aizynthfinder-web
+
+基于aizynthfinder化学逆合成算法包制作的web网站的前后端代码仓库
