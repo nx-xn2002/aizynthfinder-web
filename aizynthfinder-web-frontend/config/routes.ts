@@ -52,6 +52,12 @@ export default [
     component: './TableList',
   },
   {
+    name: 'SMILES逆合成',
+    icon: 'DotChart',
+    path: '/generate',
+    component: './Generate',
+  },
+  {
     path: '/',
     redirect: '/welcome',
   },
