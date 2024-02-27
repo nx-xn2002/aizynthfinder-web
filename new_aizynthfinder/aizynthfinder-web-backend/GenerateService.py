@@ -1,4 +1,3 @@
-from aizynthfinder.utils.exceptions import MoleculeException
 from rdkit import Chem
 from rdkit.Chem.Draw import MolToImage
 
@@ -14,7 +13,7 @@ class GenerateService:
             mol = Chem.MolFromSmiles(Molecule(smiles=smiles).smiles)
             img = MolToImage(mol)
             name = HashUtils.md5_hash(smiles)
-            img.save(f"images/{name}.png")
+            img.save(f"D:/MyWebProject/aizynthfinder-web/aizynthfinder-web-frontend/public/images/{name}.png")
             res = name
         except:
             print(f"生成失败,无效的smiles表达式:[{smiles}]")
