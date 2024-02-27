@@ -1,14 +1,14 @@
 import {Footer} from '@/components';
-import {login} from '@/services/ant-design-pro/api';
 import {getFakeCaptcha} from '@/services/ant-design-pro/login';
 import {LockOutlined, MobileOutlined, UserOutlined,} from '@ant-design/icons';
 import {LoginForm, ProFormCaptcha, ProFormCheckbox, ProFormText,} from '@ant-design/pro-components';
 import {Helmet, history, useModel} from '@umijs/max';
-import {Alert, message, Tabs} from 'antd';
+import {message, Tabs} from 'antd';
 import {createStyles} from 'antd-style';
 import React, {useState} from 'react';
 import {flushSync} from 'react-dom';
 import Settings from '../../../../config/defaultSettings';
+import {login} from "@/services/user/UserController";
 
 const useStyles = createStyles(({token}) => {
   return {
@@ -45,22 +45,7 @@ const useStyles = createStyles(({token}) => {
     },
   };
 });
-const LoginMessage: React.FC<{
-  content: string;
-}> = ({content}) => {
-  return (
-    <Alert
-      style={{
-        marginBottom: 24,
-      }}
-      message={content}
-      type="error"
-      showIcon
-    />
-  );
-};
 const Login: React.FC = () => {
-  const [userLoginState, setUserLoginState] = useState<API.LoginResult>({});
   const [type, setType] = useState<string>('account');
   const {initialState, setInitialState} = useModel('@@initialState');
   const {styles} = useStyles();
@@ -76,38 +61,28 @@ const Login: React.FC = () => {
     }
   };
   const handleSubmit = async (values: API.LoginParams) => {
-    if (values.username === "admin" && values.password === "admin") {
-      const defaultLoginSuccessMessage = '登录成功！';
-      message.success(defaultLoginSuccessMessage);
-      await fetchUserInfo();
-      const urlParams = new URL(window.location.href).searchParams;
-      history.push(urlParams.get('redirect') || '/');
-      return;
-    }
     try {
       // 登录
-      const msg = await login({
-        ...values,
-        type,
-      });
-      if (msg.status === 'ok') {
+      const res = await login(
+        {...values}
+      );
+      if (res.code === 0) {
         const defaultLoginSuccessMessage = '登录成功！';
         message.success(defaultLoginSuccessMessage);
         await fetchUserInfo();
         const urlParams = new URL(window.location.href).searchParams;
         history.push(urlParams.get('redirect') || '/');
         return;
+      } else {
+        message.error(res.description)
       }
-      console.log(msg);
-      // 如果失败去设置用户错误信息
-      setUserLoginState(msg);
+      console.log(res.description);
     } catch (error) {
       const defaultLoginFailureMessage = '登录失败，请重试！';
       console.log(error);
       message.error(defaultLoginFailureMessage);
     }
   };
-  const {status, type: loginType} = userLoginState;
   return (
     <div className={styles.container}>
       <Helmet>
@@ -127,8 +102,8 @@ const Login: React.FC = () => {
             maxWidth: '75vw',
           }}
           logo={<img alt="logo" src="/logo.png"/>}
-          title="Ant Design"
-          subTitle={'Aizynthfinder Web 是邮专最具潜力的 化学逆合成 设计网站'}
+          title="Aizynthfinder Web"
+          subTitle={'Aizynthfinder Web 是邮专最具潜力的 AI化学逆合成 在线工具网站'}
           initialValues={{
             autoLogin: true,
           }}
@@ -151,10 +126,6 @@ const Login: React.FC = () => {
               },
             ]}
           />
-
-          {status === 'error' && loginType === 'account' && (
-            <LoginMessage content={'错误的用户名和密码(admin/ant.design)'}/>
-          )}
           {type === 'account' && (
             <>
               <ProFormText
@@ -187,8 +158,6 @@ const Login: React.FC = () => {
               />
             </>
           )}
-
-          {status === 'error' && loginType === 'mobile' && <LoginMessage content="验证码错误"/>}
           {type === 'mobile' && (
             <>
               <ProFormText

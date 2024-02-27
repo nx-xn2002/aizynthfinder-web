@@ -1,5 +1,4 @@
 import {AvatarDropdown, AvatarName, Footer, Question} from '@/components';
-import {currentUser as queryCurrentUser} from '@/services/ant-design-pro/api';
 import {LinkOutlined} from '@ant-design/icons';
 import type {Settings as LayoutSettings} from '@ant-design/pro-components';
 import {SettingDrawer} from '@ant-design/pro-components';
@@ -7,51 +6,24 @@ import type {RunTimeLayoutConfig} from '@umijs/max';
 import {history, Link} from '@umijs/max';
 import defaultSettings from '../config/defaultSettings';
 import {errorConfig} from './requestErrorConfig';
+import {current} from "@/services/user/UserController";
 
 const isDev = process.env.NODE_ENV === 'development';
 const loginPath = '/user/login';
 
-/**
- * @see  https://umijs.org/zh-CN/plugins/plugin-initial-state
- * */
-const fakeUser: API.CurrentUser = {
-  name: "Admin",
-  avatar: "logo.png",
-  userid: "123456",
-  email: "john.doe@example.com",
-  signature: "Hello, I'm John Doe",
-  title: "Software Engineer",
-  group: "Engineering",
-  tags: [
-    {key: "1", label: "Tag1"},
-    {key: "2", label: "Tag2"}
-  ],
-  notifyCount: 3,
-  unreadCount: 5,
-  country: "United States",
-  access: "admin",
-  geographic: {
-    province: {label: "California", key: "CA"},
-    city: {label: "Los Angeles", key: "LA"}
-  },
-  address: "123 Main Street",
-  phone: "+1234567890"
-};
 
 export async function getInitialState(): Promise<{
   settings?: Partial<LayoutSettings>;
-  currentUser?: API.CurrentUser;
+  currentUser?: API.UserInfo;
   loading?: boolean;
   fetchUserInfo?: () => Promise<API.CurrentUser | undefined>;
 }> {
   const fetchUserInfo = async () => {
-    //返回虚假用户
-    return fakeUser;
     try {
-      const msg = await queryCurrentUser({
+      const res = await current({
         skipErrorHandler: true,
       });
-      return msg.data;
+      return res.data;
     } catch (error) {
       history.push(loginPath);
     }
@@ -85,7 +57,7 @@ export const layout: RunTimeLayoutConfig = ({initialState, setInitialState}) => 
       },
     },
     waterMarkProps: {
-      content: initialState?.currentUser?.name,
+      content: initialState?.currentUser?.username,
     },
     footerRender: () => <Footer/>,
     onPageChange: () => {
@@ -158,7 +130,7 @@ export const layout: RunTimeLayoutConfig = ({initialState, setInitialState}) => 
  * @doc https://umijs.org/docs/max/request#配置
  */
 export const request = {
-  baseURL: 'http://127.0.0.1:8000/',
+  baseURL: 'http://localhost:8000/',
   withCredentials: true,
   ...errorConfig,
 };

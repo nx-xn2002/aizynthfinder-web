@@ -1,7 +1,7 @@
 import {PageContainer,} from '@ant-design/pro-components';
 import React, {useState} from 'react';
 import {Button, Card, Divider, Form, Image, Input, message} from 'antd';
-import {getUserByIdUsingGet} from "@/services/aigenerate/generateController";
+import {getUserByIdUsingGet} from "@/services/aigenerate/GenerateController";
 
 const Generate: React.FC = () => {
   const [smilesToGen, setSmilesToGen] = useState<string>();

@@ -7,7 +7,7 @@ export async function getUserByIdUsingGet(
   params: API.getImgBySmilesUsingGETParams,
   options?: { [key: string]: any },
 ) {
-  return request<API.BaseResponseString_>('/generate/getImgBySmiles', {
+  return request<API.BaseResponse>('/generate/getImgBySmiles', {
     method: 'GET',
     params: {
       ...params,
