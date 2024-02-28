@@ -24,6 +24,16 @@ def get_img_by_smiles():
         return BaseResponse.null_error()
 
 
+@app.route('/generate/getRoutesBySmiles', methods=['GET'])
+def get_routes_by_smiles():
+    smiles = request.args.get('smiles')
+    if smiles is not None:
+        res = GenerateService.generate_route_from_smiles(smiles)
+        return BaseResponse.success(res)
+    else:
+        return BaseResponse.null_error()
+
+
 @app.route('/user/login', methods=['POST'])
 def login():
     username = request.json['username']
