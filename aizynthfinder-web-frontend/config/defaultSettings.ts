@@ -15,7 +15,7 @@ const Settings: ProLayoutProps & {
   fixedHeader: false,
   fixSiderbar: true,
   colorWeak: false,
-  title: 'aizynthfinder-web',
+  title: 'Aizynthfinder Web',
   pwa: true,
   logo: '/logo.png',
   iconfontUrl: '',

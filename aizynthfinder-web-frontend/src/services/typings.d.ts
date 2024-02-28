@@ -8,6 +8,10 @@ declare namespace API {
     /** smiles */
     smiles?: string;
   };
+  type getRoutesBySmilesGETParams = {
+    /** smiles */
+    smiles?: string;
+  };
   type LoginParams = {
     username?: string;
     password?: string;
