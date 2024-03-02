@@ -20,6 +20,7 @@ export async function getUserByIdUsingGet(
 export async function login(body: API.LoginParams, options?: { [key: string]: any }) {
   return request<API.BaseResponse>('/user/login', {
     method: 'POST',
+    withCredentials: true,
     headers: {
       'Content-Type': 'application/json',
     },
@@ -32,6 +33,7 @@ export async function login(body: API.LoginParams, options?: { [key: string]: an
 export async function current(options?: { [key: string]: any }) {
   return request<API.BaseResponse>('/user/current', {
     method: 'GET',
+    withCredentials: true,
     ...(options || {}),
   });
 }
@@ -40,6 +42,7 @@ export async function current(options?: { [key: string]: any }) {
 export async function logout(options?: { [key: string]: any }) {
   return request<Record<string, any>>('/user/logout', {
     method: 'POST',
+    withCredentials: true,
     ...(options || {}),
   });
 }

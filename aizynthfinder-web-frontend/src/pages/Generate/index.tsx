@@ -96,6 +96,8 @@ const Generate: React.FC = () => {
     console.log(e);
     setSmilesToGen('error');
     setGenAble(false);
+    dataSource = []
+    setLoading(false);
   };
   return (
     <PageContainer>
