@@ -4,6 +4,7 @@ from rdkit.Chem.Draw import MolToImage
 
 from aizynthfinder.chem import Molecule
 from utils.HashUtils import HashUtils
+from Config import Config
 
 
 class GenerateService:
@@ -14,7 +15,7 @@ class GenerateService:
             mol = Chem.MolFromSmiles(Molecule(smiles=smiles).smiles)
             img = MolToImage(mol)
             name = HashUtils.md5_hash(smiles)
-            img.save(f"D:/MyWebProject/aizynthfinder-web/aizynthfinder-web-frontend/public/images/{name}.png")
+            img.save(Config.FRONT_END_PATH + f"/public/images/{name}.png")
             res = name
         except:
             print(f"生成失败,无效的smiles表达式:[{smiles}]")
@@ -41,7 +42,7 @@ class GenerateService:
             res_dict = {'routes': []}
             for i in range(len(trees)):
                 trees[i].to_image().save(
-                    f"D:/MyWebProject/aizynthfinder-web/aizynthfinder-web-frontend/public/images/{name}{i + 1}.png")
+                    Config.FRONT_END_PATH + f"/public/images/{name}{i + 1}.png")
                 temp = trees[i].to_dict()
                 temp['image_name'] = f"{name}{i + 1}"
                 temp['index'] = i
