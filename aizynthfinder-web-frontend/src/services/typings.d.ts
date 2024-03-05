@@ -11,6 +11,7 @@ declare namespace API {
   type getRoutesBySmilesGETParams = {
     /** smiles */
     smiles?: string;
+    scorers?: string[];
   };
   type LoginParams = {
     username?: string;
