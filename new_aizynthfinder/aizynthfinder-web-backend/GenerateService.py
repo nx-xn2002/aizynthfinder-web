@@ -3,6 +3,7 @@ from rdkit import Chem
 from rdkit.Chem.Draw import MolToImage
 
 from aizynthfinder.chem import Molecule
+from aizynthfinder.context.scoring import CombinedScorer
 from utils.HashUtils import HashUtils
 from Config import Config
 
@@ -22,7 +23,7 @@ class GenerateService:
         return res
 
     @staticmethod
-    def generate_route_from_smiles(smiles):
+    def generate_route_from_smiles(smiles, scorers):
         res = None
         try:
             # 初始化 AiZynthFinder
@@ -38,6 +39,8 @@ class GenerateService:
             finder.tree_search()
             finder.build_routes()
             name = HashUtils.md5_hash(smiles)
+            scorer = CombinedScorer(finder.config, scorers)
+            print("评分函数初始化成功")
             trees = finder.routes.reaction_trees
             res_dict = {'routes': []}
             for i in range(len(trees)):
@@ -46,9 +49,11 @@ class GenerateService:
                 temp = trees[i].to_dict()
                 temp['image_name'] = f"{name}{i + 1}"
                 temp['index'] = i
+                temp['score'] = round(scorer(trees[i]), 8)
                 temp_dict = res_dict['routes']
                 temp_dict.append(temp)
                 res_dict['routes'] = temp_dict
+            res_dict['routes'] = sorted(res_dict['routes'], key=lambda x: x['score'], reverse=True)
             res = res_dict
         except:
             print(f"逆合成失败:[{smiles}]")

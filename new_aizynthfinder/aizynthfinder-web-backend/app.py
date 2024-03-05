@@ -26,9 +26,11 @@ def get_img_by_smiles():
 
 @app.route('/generate/getRoutesBySmiles', methods=['GET'])
 def get_routes_by_smiles():
+    scorers = request.args.getlist('scorers[]')
+    print(scorers)
     smiles = request.args.get('smiles')
     if smiles is not None:
-        res = GenerateService.generate_route_from_smiles(smiles)
+        res = GenerateService.generate_route_from_smiles(smiles, scorers)
         return BaseResponse.success(res)
     else:
         return BaseResponse.null_error()
