@@ -1,3 +1,8 @@
+import io
+
+import pandas as pd
+import requests
+
 from aizynthfinder.aizynthfinder import AiZynthFinder
 from rdkit import Chem
 from rdkit.Chem.Draw import MolToImage
@@ -23,16 +28,16 @@ class GenerateService:
         return res
 
     @staticmethod
-    def generate_route_from_smiles(smiles, scorers):
+    def generate_route_from_smiles(smiles, scorers, finder):
         res = None
         try:
-            # 初始化 AiZynthFinder
-            filename = "../model_database/config.yml"
-            finder = AiZynthFinder(filename)
-            # 选择库存、扩展策略和过滤策略
-            finder.stock.select("zinc")
-            finder.expansion_policy.select("uspto_condition")
-            finder.filter_policy.select("uspto")
+            # # 初始化 AiZynthFinder
+            # filename = "../model_database/config.yml"
+            # finder = AiZynthFinder(filename)
+            # # 选择库存、扩展策略和过滤策略
+            # finder.stock.select("zinc")
+            # finder.expansion_policy.select("uspto_condition")
+            # finder.filter_policy.select("uspto")
             # 设置目标 SMILES
             finder.target_smiles = smiles
             # 执行树搜索
@@ -57,4 +62,39 @@ class GenerateService:
             res = res_dict
         except:
             print(f"逆合成失败:[{smiles}]")
+        return res
+
+    @staticmethod
+    def get_mols_from_smiles(smiles):
+        res = None
+        try:
+            url = "http://8.140.51.36:5000/mol2mol"
+            data = {
+                "smi_input": smiles
+            }
+            response = requests.post(url, json=data)
+            result = response.json()
+            csv_content = result['csv_content']
+            string_io = io.StringIO(csv_content)
+            data = pd.read_csv(string_io)
+            length = min(len(data), 20)
+            res_dict = {'mols': []}
+            for i in range(length):
+                temp = {}
+                mol = Chem.MolFromSmiles(Molecule(smiles=data['SMILES'][i]).smiles)
+                img = MolToImage(mol)
+                name = HashUtils.md5_hash(data['SMILES'][i])
+                img.save(Config.FRONT_END_PATH + f"/public/images/{name}.png")
+                temp['key'] = i + 1
+                temp['smiles'] = data['SMILES'][i]
+                temp['tanimoto'] = data['Tanimoto'][i]
+                temp['nll'] = data['NLL'][i]
+                temp['image_name'] = name
+                temp['generate_with_smiles'] = []
+                temp_dict = res_dict['mols']
+                temp_dict.append(temp)
+                res_dict['mols'] = temp_dict
+            res = res_dict
+        except:
+            print(f"分子生成失败:[{smiles}]")
         return res

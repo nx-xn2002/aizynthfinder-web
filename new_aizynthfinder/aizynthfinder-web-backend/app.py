@@ -1,5 +1,6 @@
 from datetime import timedelta
 
+from aizynthfinder.aizynthfinder import AiZynthFinder
 from flask import Flask, request, session
 from flask_cors import CORS
 
@@ -30,7 +31,17 @@ def get_routes_by_smiles():
     print(scorers)
     smiles = request.args.get('smiles')
     if smiles is not None:
-        res = GenerateService.generate_route_from_smiles(smiles, scorers)
+        res = GenerateService.generate_route_from_smiles(smiles, scorers, finder)
+        return BaseResponse.success(res)
+    else:
+        return BaseResponse.null_error()
+
+
+@app.route('/getMolsBySmiles', methods=['GET'])
+def get_mols_by_smiles():
+    smiles = request.args.get('smiles')
+    if smiles is not None:
+        res = GenerateService.get_mols_from_smiles(smiles)
         return BaseResponse.success(res)
     else:
         return BaseResponse.null_error()
@@ -70,4 +81,11 @@ def logout():
 
 
 if __name__ == '__main__':
+    # 初始化 AiZynthFinder
+    filename = "../model_database/config.yml"
+    finder = AiZynthFinder(filename)
+    # 选择库存、扩展策略和过滤策略
+    finder.stock.select("zinc")
+    finder.expansion_policy.select("uspto_condition")
+    finder.filter_policy.select("uspto")
     app.run(host='localhost', port=9000, debug=True)
