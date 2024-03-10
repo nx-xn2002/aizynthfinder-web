@@ -29,3 +29,17 @@ export async function getRoutesBySmiles(
     ...(options || {}),
   });
 }
+
+/** getMolsBySmiles GET /getMolsBySmiles */
+export async function getMolsBySmiles(
+  params: API.getMolsBySmilesGETParams,
+  options?: { [key: string]: any },
+) {
+  return request<API.BaseResponse>('/getMolsBySmiles', {
+    method: 'GET',
+    params: {
+      ...params,
+    },
+    ...(options || {}),
+  });
+}

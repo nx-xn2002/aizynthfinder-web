@@ -13,6 +13,10 @@ declare namespace API {
     smiles?: string;
     scorers?: string[];
   };
+  type getMolsBySmilesGETParams = {
+    /** smiles */
+    smiles?: string;
+  };
   type LoginParams = {
     username?: string;
     password?: string;
