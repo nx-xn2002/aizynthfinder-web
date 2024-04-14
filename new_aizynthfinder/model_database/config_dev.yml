@@ -1,0 +1,17 @@
+expansion:
+  uspto:
+    - D:\PyCharm\pythonProjects\aizynthfinder\aizynthfinder-web\new_aizynthfinder\model_database\uspto_model.onnx
+    - D:\PyCharm\pythonProjects\aizynthfinder\aizynthfinder-web\new_aizynthfinder\model_database\uspto_templates.csv.gz
+  ringbreaker:
+    - D:\PyCharm\pythonProjects\aizynthfinder\aizynthfinder-web\new_aizynthfinder\model_database\uspto_ringbreaker_model.onnx
+    - D:\PyCharm\pythonProjects\aizynthfinder\aizynthfinder-web\new_aizynthfinder\model_database\uspto_ringbreaker_templates.csv.gz
+  change:
+    - D:\PyCharm\pythonProjects\aizynthfinder\aizynthfinder-web\new_aizynthfinder\model_database\uspto_ringbreaker_model.onnx
+    - D:\PyCharm\pythonProjects\aizynthfinder\aizynthfinder-web\new_aizynthfinder\model_database\new_data.csv
+  uspto_condition:
+    - D:\PyCharm\pythonProjects\aizynthfinder\aizynthfinder-web\new_aizynthfinder\model_database\uspto_model.onnx
+    - D:\PyCharm\pythonProjects\aizynthfinder\aizynthfinder-web\new_aizynthfinder\model_database\uspto_templates.csv
+filter:
+  uspto: D:\PyCharm\pythonProjects\aizynthfinder\aizynthfinder-web\new_aizynthfinder\model_database\uspto_filter_model.onnx
+stock:
+  zinc: D:\PyCharm\pythonProjects\aizynthfinder\aizynthfinder-web\new_aizynthfinder\model_database\zinc_stock.hdf5

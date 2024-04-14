@@ -1,16 +1,16 @@
 import io
+import json
 
 import pandas as pd
 import requests
-
-from aizynthfinder.aizynthfinder import AiZynthFinder
 from rdkit import Chem
 from rdkit.Chem.Draw import MolToImage
 
+from Config import Config
 from aizynthfinder.chem import Molecule
 from aizynthfinder.context.scoring import CombinedScorer
+from aizynthfinder.reactiontree import ReactionTree
 from utils.HashUtils import HashUtils
-from Config import Config
 
 
 class GenerateService:
@@ -21,7 +21,7 @@ class GenerateService:
             mol = Chem.MolFromSmiles(Molecule(smiles=smiles).smiles)
             img = MolToImage(mol)
             name = HashUtils.md5_hash(smiles)
-            img.save(Config.FRONT_END_PATH + f"/public/images/{name}.png")
+            img.save(Config.FRONT_END_PATH + f"/dist/images/{name}.png")
             res = name
         except:
             print(f"生成失败,无效的smiles表达式:[{smiles}]")
@@ -31,13 +31,6 @@ class GenerateService:
     def generate_route_from_smiles(smiles, scorers, finder):
         res = None
         try:
-            # # 初始化 AiZynthFinder
-            # filename = "../model_database/config.yml"
-            # finder = AiZynthFinder(filename)
-            # # 选择库存、扩展策略和过滤策略
-            # finder.stock.select("zinc")
-            # finder.expansion_policy.select("uspto_condition")
-            # finder.filter_policy.select("uspto")
             # 设置目标 SMILES
             finder.target_smiles = smiles
             # 执行树搜索
@@ -49,9 +42,12 @@ class GenerateService:
             trees = finder.routes.reaction_trees
             res_dict = {'routes': []}
             for i in range(len(trees)):
-                trees[i].to_image().save(
-                    Config.FRONT_END_PATH + f"/public/images/{name}{i + 1}.png")
-                temp = trees[i].to_dict()
+                tree_to_change = trees[i].to_dict()
+                GenerateService.change(tree_to_change)
+                new_tree = ReactionTree.from_dict(tree_to_change)
+                new_tree.to_image().save(
+                    Config.FRONT_END_PATH + f"/dist/images/{name}{i + 1}.png")
+                temp = new_tree.to_dict()
                 temp['image_name'] = f"{name}{i + 1}"
                 temp['index'] = i
                 temp['score'] = round(scorer(trees[i]), 8)
@@ -84,7 +80,7 @@ class GenerateService:
                 mol = Chem.MolFromSmiles(Molecule(smiles=data['SMILES'][i]).smiles)
                 img = MolToImage(mol)
                 name = HashUtils.md5_hash(data['SMILES'][i])
-                img.save(Config.FRONT_END_PATH + f"/public/images/{name}.png")
+                img.save(Config.FRONT_END_PATH + f"/dist/images/{name}.png")
                 temp['key'] = i + 1
                 temp['smiles'] = data['SMILES'][i]
                 temp['tanimoto'] = data['Tanimoto'][i]
@@ -98,3 +94,44 @@ class GenerateService:
         except:
             print(f"分子生成失败:[{smiles}]")
         return res
+
+    @staticmethod
+    def change(tree_dict):
+        smiles = None
+        if 'smiles' in tree_dict:
+            smiles = tree_dict['smiles']
+        if 'metadata' in tree_dict:
+            if 'conditions' in tree_dict['metadata']:
+                tree_dict['metadata']['conditions'] = GenerateService.get_condition(smiles)
+        if 'children' in tree_dict:
+            for children_dict in tree_dict['children']:
+                GenerateService.change(children_dict)
+
+    @staticmethod
+    def get_condition(smiles):
+        if smiles is None:
+            return ""
+        url = 'http://10.21.248.217:8220/predict'
+        headers = {
+            'accept': 'application/json',
+            'Content-Type': 'application/json'
+        }
+        payload = {
+            'smiles': smiles
+        }
+        try:
+            response = requests.post(url, headers=headers, data=json.dumps(payload))
+        except:
+            return ""
+        print(response)
+        result = response.json()
+        res_str = ""
+        if 'Temperature' in result:
+            res_str += "Temperature:"
+            res_str += result['Temperature']
+            res_str += "\n"
+        if 'Solvent' in result:
+            res_str += "Solvent:"
+            res_str += result['Solvent']
+            res_str += "\n"
+        return res_str

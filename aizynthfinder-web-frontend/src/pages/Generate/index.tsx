@@ -2,7 +2,8 @@ import {PageContainer,} from '@ant-design/pro-components';
 import React, {useState} from 'react';
 import {Button, Card, Divider, Form, Image, Input, message, Select, SelectProps, Spin, Table} from 'antd';
 import {getImgBySmiles, getRoutesBySmiles} from "@/services/aigenerate/GenerateController";
-
+import { useLocation } from 'umi';
+import type { TableColumnsType, TableProps } from 'antd';
 
 let dataSource: any[] = [];
 
@@ -29,10 +30,71 @@ const columns = [
     align: 'center' as 'center',
   },
 ];
+// 分子式表格数据
+type TableRowSelection<T> = TableProps<T>['rowSelection'];
+
+interface DataType {
+  key: React.Key;
+  id: number;
+  name: string;
+  synonyms: string;
+  smiles: string;
+  inchi: string;
+  inchikey: string;
+}
+
+const IngredientColumns: TableColumnsType<DataType> = [
+  {
+    title: '名称',
+    dataIndex: 'name',
+  },
+  {
+    title: '同义词',
+    dataIndex: 'synonyms',
+  },
+  {
+    title: '分子式',
+    dataIndex: 'smiles',
+  },
+  {
+    title: '化合物标识',
+    dataIndex: 'inchi',
+  },
+  {
+    title: '哈希化合物标识',
+    dataIndex: 'inchikey',
+  },
+];
+
+
 const Generate: React.FC = () => {
+  const [originSmiles, setOriginSmiles] = useState<string>();
+  const [form] = Form.useForm();
+  const [smilesValue, setSmilesValue] = useState(''); // 定义状态变量
+  const location = useLocation();
+  //console.log(location.state);
+  const data: DataType[] = (location.state && location.state.ingredients) || [];
+  // 使用 map 函数遍历 ingredients 数组，并为每个对象添加 key 属性
+  const dataWithKeys = data.map((ingredient, i) => ({
+    ...ingredient, // 保留原始对象的属性
+    key: i, // 添加 key 属性，赋值为当前索引 i
+  }));
+  //分子式选择
+  const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
+  const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
+    console.log('selectedRowKeys changed: ', newSelectedRowKeys);
+    setSelectedRowKeys(newSelectedRowKeys);
+    form.setFieldsValue({ smiles: dataWithKeys[newSelectedRowKeys[0]].smiles });
+  };
+
+  const rowSelection: TableRowSelection<DataType> = {
+    type: 'radio',
+    selectedRowKeys,
+    onChange: onSelectChange,
+  };
+
   const [smilesToGen, setSmilesToGen] = useState<string>();
   const [scorers, setScorers] = useState<string[]>();
-  const [originSmiles, setOriginSmiles] = useState<string>();
   const [submitting, setSubmitting] = useState<boolean>();
   const [loading, setLoading] = useState<boolean>();
   const [genAble, setGenAble] = useState<boolean>();
@@ -120,6 +182,7 @@ const Generate: React.FC = () => {
     console.log('Failed:', errorInfo);
   };
   const onSmilesChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setSmilesValue(e.target.value);
     console.log(e);
     setSmilesToGen('error');
     setGenAble(false);
@@ -131,6 +194,7 @@ const Generate: React.FC = () => {
       <Card>
         <Form
           name="basic"
+          form={form}
           initialValues={{remember: true}}
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}
@@ -141,7 +205,7 @@ const Generate: React.FC = () => {
             name="smiles"
             rules={[{required: true, message: '该项不能为空!'}]}
           >
-            <Input placeholder="请输入你想进行逆合成的SMILES式" allowClear onChange={onSmilesChange}/>
+            <Input placeholder="请输入你想进行逆合成的SMILES式" allowClear onChange={onSmilesChange} value={smilesValue}/>
           </Form.Item>
           <Form.Item wrapperCol={{span: 16}}>
             <Button type="primary" htmlType="submit">
@@ -165,6 +229,7 @@ const Generate: React.FC = () => {
               options={options}
             />
           </Form.Item>
+           <Table rowSelection={rowSelection} columns={IngredientColumns} dataSource={dataWithKeys} />
           <Divider/>
           <Image
             title="目标产物"

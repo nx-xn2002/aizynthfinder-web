@@ -15,7 +15,7 @@ const Settings: ProLayoutProps & {
   fixedHeader: false,
   fixSiderbar: true,
   colorWeak: false,
-  title: 'Aizynthfinder Web',
+  title: 'MakeDrug',
   pwa: true,
   logo: '/logo.png',
   iconfontUrl: '',

@@ -1,5 +1,7 @@
 from datetime import timedelta
 
+import sqlalchemy
+import Config
 from aizynthfinder.aizynthfinder import AiZynthFinder
 from flask import Flask, request, session
 from flask_cors import CORS
@@ -7,12 +9,15 @@ from flask_cors import CORS
 from GenerateService import GenerateService
 from models.BaseResponse import BaseResponse
 from models.User import User
+from database_models import *
 
 app = Flask(__name__)
 app.secret_key = 'nx'
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=7)  # 设置为7天有效
 app.config['SESSION_COOKIE_NAME'] = "aizynthfinder"
 CORS(app, supports_credentials=True, origins='*', exposed_headers='Set-Cookie')
+app.config.from_object(Config)
+db.init_app(app)
 
 
 @app.route('/generate/getImgBySmiles', methods=['GET'])
@@ -80,12 +85,84 @@ def logout():
     return BaseResponse.success("Logged out successfully!")
 
 
+@app.route('/tcm/search', methods=['POST'])
+def get_tcms():
+    # page = int(request.json['current'])  # 获取页码，默认为第一页
+    page = int(request.json.get('current', 1))
+    # 获取每页显示的数据量，默认为 10 条
+    per_page = int(request.json.get('pageSize', 10))
+    # 获取中文名，默认为空字符串
+    chinese_name = request.json.get('chinese_name', '')
+    # 获取英文名，默认为空字符串
+    english_name = request.json.get('english_name', '')
+    # 获取拼音名，默认为空字符串
+    pinyin_name = request.json.get('pinyin_name', '')
+
+    # 构造查询语句
+    query = TcmModel.query  # 使用 TcmModel 模型进行查询
+    if chinese_name:  # 如果name不为空
+        query = query.filter(TcmModel.chinese_name.ilike(f'%{chinese_name}%'))  # 使用 ilike() 方法查询所有包含 username 的用户名
+    if english_name:  # 如果name不为空
+        query = query.filter(TcmModel.english_name.ilike(f'%{english_name}%'))
+    if pinyin_name:  # 如果name不为空
+        query = query.filter(TcmModel.pinyin_name.ilike(f'%{pinyin_name}%'))
+
+    # 分页查询
+    pagination = query.paginate(page=page, per_page=per_page, error_out=False)  # 使用 paginate() 方法进行分页查询，不抛出异常
+    tcms = pagination.items  # 获取当前页的数据
+    total = pagination.total  # 获取总数据量
+    # 构造返回数据
+    data = {
+        'list': [tcm.to_dict() for tcm in tcms],  # 将当前页的所有数据转换为字典形式，并存储在列表中
+        'total': total,  # 总数据量
+    }
+    return BaseResponse.success(data)
+
+
+@app.route('/ingredient/search', methods=['POST'])
+def get_ingredient():
+    tcm_id = request.json.get('id', '')  # 获取 tcm_id
+
+    # 构造子查询
+    subquery = db.session.query(TcmIngredientRelationModel.ingredient_id). \
+        join(TcmModel, TcmModel.id == TcmIngredientRelationModel.tcm_id). \
+        filter(TcmModel.id == tcm_id).subquery()
+
+    # 构造主查询
+    query = db.session.query(IngredientModel). \
+        filter(IngredientModel.id.in_(subquery))
+
+    # 如果 tcm_id 存在，则添加过滤条件
+    if tcm_id:
+        query = query.filter(TcmModel.id == tcm_id)
+
+    ingredients = query.all()  # 执行查询并获取所有结果
+
+    data = {
+        'list': [ingredient.to_dict() for ingredient in ingredients],
+        'total': len(ingredients),  # 总数为结果列表的长度
+    }
+    return BaseResponse.success(data)
+
+
+
+def test_database_connection():
+    with app.app_context():
+        with db.engine.connect() as conn:
+            res = conn.execute(sqlalchemy.text('select 1'))
+            if res.fetchone()[0] == 1:
+                print('Database connection successful')
+            else:
+                print('Database connection failed')
+
+
 if __name__ == '__main__':
     # 初始化 AiZynthFinder
-    filename = "../model_database/config.yml"
+    filename = "../model_database/config_dev.yml"
     finder = AiZynthFinder(filename)
     # 选择库存、扩展策略和过滤策略
     finder.stock.select("zinc")
     finder.expansion_policy.select("uspto_condition")
     finder.filter_policy.select("uspto")
-    app.run(host='localhost', port=9000, debug=True)
+    test_database_connection()
+    app.run(host='127.0.0.1', port=9000, debug=False)

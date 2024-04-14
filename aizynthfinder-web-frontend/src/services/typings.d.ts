@@ -26,5 +26,23 @@ declare namespace API {
   type UserInfo = {
     username?: string;
     avatar?: string;
-  }
+  };
+  type TcmQueryRequest = {
+    chinese_name?: string;
+    english_name?: string;
+    pinyin_name?: string;
+  };
+  type TcmResponse = {
+    channelTropism?: string;
+    chineseName?: string;
+    effect?: string;
+    englishName?: string;
+    id?: number;
+    propertyFlavor?: string;
+    refSource?: string;
+    sdfile?: string;
+    usePart?: string;
+    indication?: string;
+    pinyinName?: string;
+  };
 }

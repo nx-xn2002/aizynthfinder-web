@@ -114,7 +114,7 @@ const Welcome: React.FC = () => {
               color: token.colorTextHeading,
             }}
           >
-            欢迎使用 Aizynthfinder Web
+            欢迎使用 MakeDrug
           </div>
           <p
             style={{
@@ -126,7 +126,7 @@ const Welcome: React.FC = () => {
               width: '65%',
             }}
           >
-            Aizynthfinder Web
+            MakeDrug
             是一个专为化学逆向合成规划而设计的在线工具。其默认算法基于蒙特卡罗树搜索，通过逐步递归地将目标分子拆解为可获取的前体分子来实现合成路径的规划。用户可以通过该工具进行分子结构的合成设计，并获得可视化的结果展示，帮助化学研究人员更高效地规划化合物的合成路线。
           </p>
           <div

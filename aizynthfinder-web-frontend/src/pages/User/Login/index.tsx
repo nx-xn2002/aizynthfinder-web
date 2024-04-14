@@ -102,8 +102,8 @@ const Login: React.FC = () => {
             maxWidth: '75vw',
           }}
           logo={<img alt="logo" src="/logo.png"/>}
-          title="Aizynthfinder Web"
-          subTitle={'Aizynthfinder Web 是邮专最具潜力的 AI化学逆合成 在线工具网站'}
+          title="MakeDrug"
+          subTitle={'MakeDrug 是邮专最具潜力的 AI化学逆合成 在线工具网站'}
           initialValues={{
             autoLogin: true,
           }}
