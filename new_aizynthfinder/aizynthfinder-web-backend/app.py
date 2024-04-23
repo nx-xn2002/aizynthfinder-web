@@ -1,6 +1,8 @@
 from datetime import timedelta
 
 import sqlalchemy
+from rdkit import Chem
+
 import Config
 from aizynthfinder.aizynthfinder import AiZynthFinder
 from flask import Flask, request, session, jsonify
@@ -10,9 +12,8 @@ from GenerateService import GenerateService
 from models.BaseResponse import BaseResponse
 from models.User import User
 from database_models import *
-from utils.chat_utils import *
+from generate import *
 from selfies import encoder, decoder
-import argparse
 
 app = Flask(__name__)
 app.secret_key = 'nx'
@@ -150,44 +151,24 @@ def get_ingredient():
 
 @app.route('/associate/evaluate', methods=['POST'])
 def evaluate_route():
-    # 定义命令行参数
-    parser = argparse.ArgumentParser(description='Description of your program')
-    parser.add_argument('--CLI', action='store_true', help='Description of CLI parameter')
-    parser.add_argument('--protein', action='store_true', help='Description of protein parameter')
-    parser.add_argument('--load_8bit', action='store_true', help='Description of load_8bit parameter')
-    parser.add_argument('--base_model', type=str, help='Description of base_model parameter')
-    parser.add_argument('--share_gradio', action='store_true', help='Description of share_gradio parameter')
-    parser.add_argument('--lora_weights', type=str, help='Description of lora_weights parameter')
-    # 设置默认值
-    parser.set_defaults(CLI=True, protein=False, load_8bit=False, base_model='/root/autodl-tmp/Llama-2-7b-chat-hf',
-                        share_gradio=True,
-                        lora_weights='/root/autodl-tmp/llama2-molinst-molecule-7b')
-
-    args = parser.parse_args()
-
-    # 根据命令行参数实例化函数类
-    generate = main(args.CLI, args.protein, args.load_8bit, args.base_model, args.share_gradio,
-                    args.lora_weights)
-
     data = request.json
     instruction = data.get('instruction')
-    input_text = data.get('input_text')
-    temperature = data.get('temperature', 0.1)
-    top_p = data.get('top_p', 0.75)
-    top_k = data.get('top_k', 40)
-    num_beams = data.get('num_beams', 4)
-    repetition_penalty = data.get('repetition_penalty', 1)
-    max_new_tokens = data.get('max_new_tokens', 128)
-    print(instruction, input_text, temperature, top_p, top_k, num_beams, repetition_penalty, max_new_tokens)
-    #
-    if generate.is_smiles(input_text):
+    input_text = data.get('input_text', "CC(=O)OC1=CC=C(C=C1)C(=O)OCC")
+    temperature = float(data.get('temperature', 0.1))
+    top_p = float(data.get('top_p', 0.75))
+    top_k = float(data.get('top_k', 40.00))
+    num_beams = int(data.get('num_beams', 4))
+    repetition_penalty = float(data.get('repetition_penalty', 1.00))
+    max_new_tokens = int(data.get('max_new_tokens', 128))
+    # print(instruction, input_text, temperature, top_p, top_k, num_beams, repetition_penalty, max_new_tokens)
+
+    if is_smiles(input_text):
         input_text = encoder(input_text)
 
-    output = generate.evaluate_instruction(instruction, input_text, temperature, top_p, top_k, num_beams,
-                                           repetition_penalty,
-                                           max_new_tokens)
+    output = evaluate_instruction(instruction, input_text, temperature, top_p, top_k, num_beams, repetition_penalty,
+                                  max_new_tokens)
 
-    if generate.is_selfies(output):
+    if is_selfies(output):
         try:
             smiles_output = Chem.MolToSmiles(Chem.MolFromSmiles(decoder(output)))
             output = smiles_output if smiles_output else output
