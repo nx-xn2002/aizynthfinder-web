@@ -61,6 +61,7 @@
 ```bash
 git clone https://github.com/nx-xn2002/aizynthfinder-web.git
 ```
+进入项目文件夹，创建名为`.git`的空文件夹，否则后面会报个错
 
 2. 安装相关依赖
 
