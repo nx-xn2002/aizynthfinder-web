@@ -1,0 +1,9 @@
+aizynthfinder[all]
+flask
+flask_cors
+flask_sqlalchemy
+selfies
+translate
+transformers
+peft
+pymysql
