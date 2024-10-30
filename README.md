@@ -103,6 +103,8 @@ git lfs pull
 
 严格完成以上步骤后，将当前文件夹拖入`aizynthfinder-web`文件夹中，然后在pycharm中打开`aizynthfinder-web/new_aizynthfinder`文件夹
 
+5.后端环境配置
+
 命令行运行指令初始化conda虚拟环境
 ```bash
 conda create "python>=3.8,<3.10" -n aizynth-env
@@ -121,7 +123,7 @@ pip install -r requirements.txt
 
 接下来，启动`new_aizynthfinder/aizynthfinder-web-backend/app.py`即可
 
-5. 在浏览器中使用默认账号密码admin尝试进行登录，若成功，则前后端配置启动完毕
+6. 在浏览器中使用默认账号密码admin尝试进行登录，若成功，则前后端配置启动完毕
 
 
 
