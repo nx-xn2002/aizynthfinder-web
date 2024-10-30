@@ -150,4 +150,5 @@ FRONT_END_PATH = r"E:\Projects\aizynthfinder-web\aizynthfinder-web-frontend"
 ## 调试
 
 **前端**：浏览器中按`F12`，可查看网页发出的请求与响应
+
 **后端**：在pycharm的终端上可以看到输出的关于前端的请求记录
