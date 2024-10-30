@@ -129,6 +129,9 @@ FRONT_END_PATH = r"E:\Projects\aizynthfinder-web\aizynthfinder-web-frontend"
 修改`aizynthfinder-web/new_aizynthfinder/model_database/config_dev.yml`中的路径，可以使用`Ctrl+H`来批量替换为你本地真实的路径。如：
 <img width="939" alt="32628f8ca8afe956aec6360e3712679" src="https://github.com/user-attachments/assets/2d7cb43c-5b7b-466b-b73e-fd60e1db1e81">
 
+添加Python解释器，打开`Pycharm-File-Settings-Project:new_aizynthfinder-Python Interpreter-Add Interpreter-Add Local Interpreter-Conda Environmen-Use existing environment`，选择aizynth-env，点击OK，等待项目刷新。
+
+
 #### 6. 启动后端
 接下来，启动`new_aizynthfinder/aizynthfinder-web-backend/app.py`即可
 
@@ -143,7 +146,7 @@ FRONT_END_PATH = r"E:\Projects\aizynthfinder-web\aizynthfinder-web-frontend"
 
 ![image](https://github.com/user-attachments/assets/1be32f24-c811-4f2d-961e-fee1fab54cdd)
 
-启动新配制的app.py即可
+启动新配置的app.py即可
 
 在浏览器中使用默认账号密码admin尝试进行登录，若成功，则前后端配置启动完毕
 
