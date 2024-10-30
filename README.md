@@ -111,7 +111,8 @@ conda create "python>=3.8,<3.10" -n aizynth-env
 激活虚拟环境并安装相应依赖
 ```bash
 conda activate aizynth-env
-python -m pip install aizynthfinder[all]
+cd ./aizynthfinder-web-backend
+pip install -r requirements.txt
 ```
 
 请使用`new_aizynthfinder`的虚拟环境运行该项目，另外，请通过`pip install`指令下载`flask_cors`和`flask`包
