@@ -150,6 +150,7 @@ FRONT_END_PATH = r"E:\Projects\aizynthfinder-web\aizynthfinder-web-frontend"
 
 ## 开发
 **前端中，配置前端请求后端地址的文件路径**：`aizynthfinder-web\aizynthfinder-web-frontend\src\app.tsx`
+
 **后端中，配置后端部署地址的文件路径**：`\aizynthfinder-web\new_aizynthfinder\aizynthfinder-web-backend\app.py`
 ## 调试
 
