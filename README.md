@@ -77,7 +77,7 @@ git clone https://github.com/nx-xn2002/aizynthfinder-web.git
 
 在当前`aizynthfinder-web-frontend`目录下，命令行运行`npm install`指令安装依赖
 
-运行完毕后，运行`package.json`文件中的`start`命令启动前端
+运行完毕后，运行`package.json`文件中的`start`命令启动前端（或者执行命令`npm run start`）
 
 ![image-20240302145719677](images/image-20240302145719677.png)
 
