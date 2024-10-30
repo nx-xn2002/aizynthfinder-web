@@ -58,22 +58,22 @@
 
 
 
-### 快速开始
+## 快速开始
 
-#### 1. 将项目克隆至本地
+### 1. 将项目克隆至本地
 
 ```bash
 git clone https://github.com/nx-xn2002/aizynthfinder-web.git
 ```
 进入项目文件夹，创建名为`.git`的空文件夹，否则后面会报个错
 
-#### 2. 安装相关依赖
+### 2. 安装相关依赖
 
 安装最新LTS版本的node.js以便运行前端项目 https://nodejs.org/en
 
 在命令行更新当前npm至最新版本
 
-#### 3. 配置并启动前端项目
+### 3. 配置并启动前端项目
 
 在idea、webstorm或pycharm等ide中，打开`aizynthfinder-web/aizynthfinder-web-frontend`文件夹，前端项目文件夹如图所示
 
@@ -89,7 +89,7 @@ git clone https://github.com/nx-xn2002/aizynthfinder-web.git
 
 <img src="images/image-20240302150829448.png" height="300" style="float:left;">
 
-#### 4. 拉取后端
+### 4. 拉取后端
 
 在外部其他目录下，运行拉取后端依赖包
 
@@ -107,7 +107,7 @@ git lfs pull
 
 严格完成以上步骤后，将当前文件夹拖入`aizynthfinder-web`文件夹中，然后在pycharm中打开`aizynthfinder-web/new_aizynthfinder`文件夹
 
-#### 5.后端环境配置
+### 5.后端环境配置
 
 命令行运行指令初始化conda虚拟环境（需已安装anaconda或者其他工具）
 ```bash
@@ -132,7 +132,7 @@ FRONT_END_PATH = r"E:\Projects\aizynthfinder-web\aizynthfinder-web-frontend"
 添加Python解释器，打开`Pycharm-File-Settings-Project:new_aizynthfinder-Python Interpreter-Add Interpreter-Add Local Interpreter-Conda Environmen-Use existing environment`，选择aizynth-env，点击OK，等待项目刷新。
 
 
-#### 6. 启动后端
+### 6. 启动后端
 接下来，启动`new_aizynthfinder/aizynthfinder-web-backend/app.py`即可
 
 若被启动的是pytest in app，遵照如下解决方法：
