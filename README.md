@@ -114,7 +114,7 @@ conda create "python>=3.8,<3.10" -n aizynth-env
 ```bash
 conda activate aizynth-env
 cd ./aizynthfinder-web-backend
-pip install -r requirements.txt
+pip install -r requirements.txt  #后续若加了新包记得同步更新到此txt文件中
 ```
 
 在`aizynthfinder-web-backend/Config.py`文件中，修改`FRONT_END_PATH`的属性值，配置当前前端的路径，如：
