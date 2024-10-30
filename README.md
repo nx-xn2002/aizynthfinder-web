@@ -117,7 +117,10 @@ cd ./aizynthfinder-web-backend
 pip install -r requirements.txt
 ```
 
-在`aizynthfinder-web-backend/Config.py`文件中，配置当前前端的路径
+在`aizynthfinder-web-backend/Config.py`文件中，修改`FRONT_END_PATH`的属性值，配置当前前端的路径，如：
+```config
+FRONT_END_PATH = r"E:\Projects\aizynthfinder-web\aizynthfinder-web-frontend"
+```
 
 修改`aizynthfinder-web/new_aizynthfinder/model_database/config_dev.yml`中的路径，可以使用`Ctrl+H`来批量替换为你本地真实的路径。
 
