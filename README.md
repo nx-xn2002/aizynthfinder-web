@@ -152,6 +152,9 @@ FRONT_END_PATH = r"E:\Projects\aizynthfinder-web\aizynthfinder-web-frontend"
 **前端中，配置前端请求后端地址的文件路径**：`aizynthfinder-web\aizynthfinder-web-frontend\src\app.tsx`
 
 **后端中，配置后端部署地址的文件路径**：`\aizynthfinder-web\new_aizynthfinder\aizynthfinder-web-backend\app.py`
+
+二者应当保持一致
+
 ## 调试
 
 **前端**：浏览器中按`F12`，可查看网页发出的请求与响应
