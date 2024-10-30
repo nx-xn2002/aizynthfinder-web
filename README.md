@@ -134,6 +134,7 @@ FRONT_END_PATH = r"E:\Projects\aizynthfinder-web\aizynthfinder-web-frontend"
 
 添加Python解释器，打开`Pycharm-File-Settings-Project:new_aizynthfinder-Python Interpreter-Add Interpreter-Add Local Interpreter-Conda Environmen-Use existing environment`，选择aizynth-env，点击OK，等待项目刷新。
 
+配置好解释器以后Pycharm终端自动激活aizynth-env环境，不需要手动`conda activate`
 
 ### 6. 启动后端
 接下来，启动`new_aizynthfinder/aizynthfinder-web-backend/app.py`即可
