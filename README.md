@@ -42,6 +42,10 @@
 
 <img src="images/image-20240228185310364.png" height="400" style="float:left;">
 
+#### 调试
+
+浏览器中按F12，可查看网页发出的请求与响应
+
 ## 后端 - aizynthfinder-web-backend
 
 ### 技术选型
