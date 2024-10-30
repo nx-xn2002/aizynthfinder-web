@@ -52,6 +52,9 @@
 
 - Python + Flask
 
+### 调试
+在pycharm的终端上可以看到输出了前端的请求记录
+
 
 
 
@@ -149,9 +152,6 @@ FRONT_END_PATH = r"E:\Projects\aizynthfinder-web\aizynthfinder-web-frontend"
 启动新配置的app.py即可
 
 在浏览器中使用默认账号密码admin尝试进行登录，若成功，则前后端配置启动完毕
-
-### 调试
-在pycharm的终端上可以看到输出了前端的请求记录
 
 
 
