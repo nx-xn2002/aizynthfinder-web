@@ -115,9 +115,9 @@ cd ./aizynthfinder-web-backend
 pip install -r requirements.txt
 ```
 
-请使用`new_aizynthfinder`的虚拟环境运行该项目，另外，请通过`pip install`指令下载`flask_cors`和`flask`包
-
 在`aizynthfinder-web-backend/Config.py`文件中，配置当前前端的路径
+
+修改`aizynthfinder-web/new_aizynthfinder/model_database/config_dev.yml`中的路径，可以使用`Ctrl+H`来批量替换为你本地真实的路径。
 
 接下来，启动`new_aizynthfinder/aizynthfinder-web-backend/app.py`即可
 
