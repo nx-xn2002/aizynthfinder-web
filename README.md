@@ -134,6 +134,13 @@ FRONT_END_PATH = r"E:\Projects\aizynthfinder-web\aizynthfinder-web-frontend"
 
 若被启动的是pytest in app，遵照如下解决方法：
 ![image](https://github.com/user-attachments/assets/1b749b71-48a5-4cdb-954f-d2255d61c7bc)
+
+点击左上角加号，选择python
+
+![image](https://github.com/user-attachments/assets/f3c01912-b229-4700-b841-bd435ec9356c)
+
+路径按实际路径配置
+
 ![image](https://github.com/user-attachments/assets/1be32f24-c811-4f2d-961e-fee1fab54cdd)
 
 启动新配制的app.py即可
