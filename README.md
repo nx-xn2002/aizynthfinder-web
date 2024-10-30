@@ -42,7 +42,7 @@
 
 <img src="images/image-20240228185310364.png" height="400" style="float:left;">
 
-#### 调试
+### 调试
 
 浏览器中按`F12`，可查看网页发出的请求与响应
 
@@ -131,7 +131,11 @@ FRONT_END_PATH = r"E:\Projects\aizynthfinder-web\aizynthfinder-web-frontend"
 
 接下来，启动`new_aizynthfinder/aizynthfinder-web-backend/app.py`即可
 
-6. 在浏览器中使用默认账号密码admin尝试进行登录，若成功，则前后端配置启动完毕
+#### 6. 启动后端
+在浏览器中使用默认账号密码admin尝试进行登录，若成功，则前后端配置启动完毕
+
+### 调试
+在pycharm的终端上可以看到输出了前端的请求记录
 
 
 
