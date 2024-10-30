@@ -105,7 +105,7 @@ git lfs pull
 
 5.后端环境配置
 
-命令行运行指令初始化conda虚拟环境
+命令行运行指令初始化conda虚拟环境（需已安装anaconda或者其他工具）
 ```bash
 conda create "python>=3.8,<3.10" -n aizynth-env
 ```
