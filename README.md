@@ -85,7 +85,7 @@ git clone https://github.com/nx-xn2002/aizynthfinder-web.git
 
 <img src="images/image-20240302150829448.png" height="300" style="float:left;">
 
-4. 配置并启动后端
+4. 拉取后端
 
 在外部其他目录下，运行拉取后端依赖包
 
