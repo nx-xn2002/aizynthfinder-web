@@ -103,6 +103,17 @@ git lfs pull
 
 严格完成以上步骤后，将当前文件夹拖入`aizynthfinder-web`文件夹中，然后在pycharm中打开`aizynthfinder-web/new_aizynthfinder`文件夹
 
+命令行运行指令初始化conda虚拟环境
+```bash
+conda create "python>=3.8,<3.10" -n aizynth-env
+```
+
+激活虚拟环境并安装相应依赖
+```bash
+conda activate aizynth-env
+python -m pip install aizynthfinder[all]
+```
+
 请使用`new_aizynthfinder`的虚拟环境运行该项目，另外，请通过`pip install`指令下载`flask_cors`和`flask`包
 
 在`aizynthfinder-web-backend/Config.py`文件中，配置当前前端的路径
