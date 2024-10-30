@@ -122,7 +122,8 @@ pip install -r requirements.txt
 FRONT_END_PATH = r"E:\Projects\aizynthfinder-web\aizynthfinder-web-frontend"
 ```
 
-修改`aizynthfinder-web/new_aizynthfinder/model_database/config_dev.yml`中的路径，可以使用`Ctrl+H`来批量替换为你本地真实的路径。
+修改`aizynthfinder-web/new_aizynthfinder/model_database/config_dev.yml`中的路径，可以使用`Ctrl+H`来批量替换为你本地真实的路径。如：
+<img width="939" alt="32628f8ca8afe956aec6360e3712679" src="https://github.com/user-attachments/assets/2d7cb43c-5b7b-466b-b73e-fd60e1db1e81">
 
 接下来，启动`new_aizynthfinder/aizynthfinder-web-backend/app.py`即可
 
